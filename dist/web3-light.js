@@ -4008,6 +4008,7 @@ module.exports = {
  * @date 2015
  */
 
+var BigNumber = require('bignumber.js');
 var coder = require('../solidity/coder');
 var utils = require('../utils/utils');
 var errors = require('./errors');
@@ -4053,9 +4054,13 @@ SolidityFunction.prototype.extractDefaultBlock = function (args) {
 SolidityFunction.prototype.validateArgs = function (args) {
     var inputArgs = args.filter(function (a) {
       // filter the options object but not arguments that are arrays
+      //
+      function isBigNumber(object) {
+        return (object && (object instanceof BigNumber || (object.constructor && object.constructor.name === 'BigNumber')));
+      }
       return !( (utils.isObject(a) === true) &&
                 (utils.isArray(a) === false) &&
-                (utils.isBigNumber(a) === false)
+                (isBigNumber(a) === false)
               );
     });
     if (inputArgs.length !== this._inputTypes.length) {
@@ -4270,7 +4275,7 @@ SolidityFunction.prototype.attachToContract = function (contract) {
 
 module.exports = SolidityFunction;
 
-},{"../solidity/coder":7,"../utils/sha3":19,"../utils/utils":20,"./errors":26,"./formatters":30}],32:[function(require,module,exports){
+},{"../solidity/coder":7,"../utils/sha3":19,"../utils/utils":20,"./errors":26,"./formatters":30,"bignumber.js":"bignumber.js"}],32:[function(require,module,exports){
 (function (Buffer){
 /*
     This file is part of web3.js.

@@ -20,7 +20,6 @@
  * @date 2015
  */
 
-var BigNumber = require('bignumber.js');
 var coder = require('../solidity/coder');
 var utils = require('../utils/utils');
 var errors = require('./errors');
@@ -67,12 +66,12 @@ SolidityFunction.prototype.validateArgs = function (args) {
     var inputArgs = args.filter(function (a) {
       // filter the options object but not arguments that are arrays
       //
-      function isBigNumber(object) {
+      function isBigNumber(number) {
         return (object && (object instanceof BigNumber || (object.constructor && object.constructor.name === 'BigNumber')));
       }
       return !( (utils.isObject(a) === true) &&
                 (utils.isArray(a) === false) &&
-                (isBigNumber(a) === false)
+                (utils.isBigNumber(a) === false)
               );
     });
     if (inputArgs.length !== this._inputTypes.length) {
